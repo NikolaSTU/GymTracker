@@ -2,7 +2,7 @@ using System;
 
 namespace GymTracker.Infrastructure.ResponseDTOs.Auth
 {
-    public class UserResponse  // tell that the login is succesful
+    public class UserResponse 
     {
         public int Id { get; set; }
         public string Username { get; set; }

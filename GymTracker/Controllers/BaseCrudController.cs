@@ -1,0 +1,56 @@
+using Microsoft.AspNetCore.Mvc;
+using Common.Services;
+using Common.Entities;
+
+namespace GymTracker.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public abstract class BaseCrudController<TEntity, TService, TCreateRequest, TGetRequest, TResponse> : ControllerBase
+        where TEntity : Common.Entities.BaseEntity
+        where TService : BaseService<TEntity, TCreateRequest, TResponse>
+    {
+        protected readonly TService _service;
+
+        public BaseCrudController(TService service)
+        {
+            _service = service;
+        }
+
+        [HttpGet]
+        public virtual IActionResult Get([FromQuery] TGetRequest request)
+        {
+            return Ok(_service.GetAll());
+        }
+
+        [HttpGet("{id}")]
+        public virtual IActionResult GetById(int id)
+        {
+            var result = _service.GetById(id);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public virtual IActionResult Post([FromBody] TCreateRequest request)
+        {
+            var result = _service.Create(request);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public virtual IActionResult Put(int id, [FromBody] TCreateRequest request)
+        {
+            var result = _service.Update(id, request);
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public virtual IActionResult Delete(int id)
+        {
+            _service.Delete(id);
+            return NoContent();
+        }
+    }
+}
