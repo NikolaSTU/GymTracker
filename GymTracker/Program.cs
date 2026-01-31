@@ -16,6 +16,8 @@ builder.Services.AddAutoMapper(typeof(ResponseMappingProfile).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//ADD SERVICES
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

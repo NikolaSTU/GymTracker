@@ -10,7 +10,7 @@ namespace Common.Entities
     {
         public int TemplateId { get; set; }
         public int ExerciseId { get; set; }
-        public long OrderIndex { get; set; }
+        public int OrderIndex { get; set; }
 
         // a template exercise is a part of one template
         public virtual WorkoutTemplate WorkoutTemplate { get; set; }
