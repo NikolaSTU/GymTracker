@@ -7,9 +7,9 @@ using System;
 
 namespace GymTracker.Controllers
 {
-    public class WorkoutsController : BaseCrudController<Workout, WorkoutService, WorkoutCreateRequest, WorkoutResponse>
+    public class WorkoutController : BaseCrudController<Workout, WorkoutService, WorkoutCreateRequest, WorkoutResponse>
     {
-        public WorkoutsController(WorkoutService service) : base(service)
+        public WorkoutController(WorkoutService service) : base(service)
         {
         }
 
@@ -17,7 +17,7 @@ namespace GymTracker.Controllers
         public IActionResult GetByUser(int userId)
         {
 
-            if (userId != GetLoggedUserId())
+            if (!IsOwnerOrAdmin(userId))
             {
                 return Unauthorized("You cannot view another user's workouts.");
             }
@@ -49,7 +49,7 @@ namespace GymTracker.Controllers
             var workout = _service.GetById(id);
             if (workout == null) return NotFound();
 
-            if (workout.UserId != GetLoggedUserId())
+            if (!IsOwnerOrAdmin(workout.UserId))
             {
                 return Unauthorized("This workout does not belong to you.");
             }
@@ -63,7 +63,7 @@ namespace GymTracker.Controllers
             var workout = _service.GetById(id);
             if (workout == null) return NotFound();
 
-            if (workout.UserId != GetLoggedUserId())
+            if (!IsOwnerOrAdmin(workout.UserId))
             {
                 return Unauthorized("You cannot delete someone else's workout.");
             }
@@ -78,19 +78,13 @@ namespace GymTracker.Controllers
             var workout = _service.GetById(id);
             if (workout == null) return NotFound();
 
-            if (workout.UserId != GetLoggedUserId())
+            if (!IsOwnerOrAdmin(workout.UserId))
             {
                 return Unauthorized("You cannot edit someone else's workout.");
             }
 
             return base.Put(id, request);
         }
-        //helper 
-        private int GetLoggedUserId()
-        {
-            var claim = User.FindFirst("loggedUserId");
-            if (claim == null) throw new UnauthorizedAccessException("User ID not found in token.");
-            return int.Parse(claim.Value);
-        }
+       
     }
 }

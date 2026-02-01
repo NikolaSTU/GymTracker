@@ -14,6 +14,7 @@ public class User : BaseEntity
     public int? Height { get; set; }
     public int? Weight { get; set; }
     public int? Gender { get; set; }
+    public string Role { get; set; } = "User";
 
     //one user has many templates and many workouts
     public virtual List<WorkoutTemplate> WorkoutTemplates { get; set; }

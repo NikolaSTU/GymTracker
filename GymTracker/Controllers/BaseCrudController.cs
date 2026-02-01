@@ -2,6 +2,7 @@ using Common.Entities;
 using Common.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace GymTracker.Controllers
 {
@@ -53,6 +54,23 @@ namespace GymTracker.Controllers
         {
             _service.Delete(id);
             return NoContent();
+        }
+
+        //helpers
+        protected bool IsOwnerOrAdmin(int resourceOwnerId)
+        {
+            if (User.IsInRole("Admin")) return true;
+
+            if (resourceOwnerId == GetLoggedUserId()) return true;
+
+            return false;
+        }
+
+        protected int GetLoggedUserId()
+        {
+            var claim = User.FindFirst("loggedUserId");
+            if (claim == null) throw new UnauthorizedAccessException("User ID not found in token.");
+            return int.Parse(claim.Value);
         }
     }
 }
