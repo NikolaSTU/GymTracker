@@ -1,12 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
-using Common.Services;
 using Common.Entities;
+using Common.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GymTracker.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public abstract class BaseCrudController<TEntity, TService, TCreateRequest, TGetRequest, TResponse> : ControllerBase
+    public abstract class BaseCrudController<TEntity, TService, TCreateRequest, TResponse> : ControllerBase
         where TEntity : Common.Entities.BaseEntity
         where TService : BaseService<TEntity, TCreateRequest, TResponse>
     {
@@ -18,7 +20,7 @@ namespace GymTracker.Controllers
         }
 
         [HttpGet]
-        public virtual IActionResult Get([FromQuery] TGetRequest request)
+        public virtual IActionResult Get()
         {
             return Ok(_service.GetAll());
         }

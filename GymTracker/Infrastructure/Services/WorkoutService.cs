@@ -63,5 +63,16 @@ namespace GymTracker.Infrastructure.Services
 
             return _mapper.Map<WorkoutResponse>(newWorkout);
         }
+
+        public List<WorkoutResponse> GetAllForUser(int userId)
+        {
+            var workouts = _db.Workouts
+                .Where(w => w.UserId == userId)
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.SetsEntries)
+                .ToList();
+
+            return _mapper.Map<List<WorkoutResponse>>(workouts);
+        }
     }
 }
