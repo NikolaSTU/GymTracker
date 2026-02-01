@@ -20,6 +20,16 @@ namespace GymTracker.Controllers
             _service = service;
         }
 
+        protected bool IsAuthorized(int id)
+        {
+            int? ownerId = _service.GetOwnerId(id);
+
+            if (ownerId == null) return true;
+
+            return IsOwnerOrAdmin(ownerId.Value);
+        }
+
+
         [HttpGet]
         public virtual IActionResult Get()
         {
@@ -29,6 +39,9 @@ namespace GymTracker.Controllers
         [HttpGet("{id}")]
         public virtual IActionResult GetById(int id)
         {
+            if (!IsAuthorized(id))
+                return Unauthorized("You do not have permission to view this data.");
+
             var result = _service.GetById(id);
             if (result == null) return NotFound();
             return Ok(result);
@@ -37,6 +50,7 @@ namespace GymTracker.Controllers
         [HttpPost]
         public virtual IActionResult Post([FromBody] TCreateRequest request)
         {
+            //implement security checks later
             var result = _service.Create(request);
             return Ok(result);
         }
@@ -44,6 +58,9 @@ namespace GymTracker.Controllers
         [HttpPut("{id}")]
         public virtual IActionResult Put(int id, [FromBody] TCreateRequest request)
         {
+            if (!IsAuthorized(id))
+                return Unauthorized("You do not have permission to edit this data.");
+
             var result = _service.Update(id, request);
             if (result == null) return NotFound();
             return Ok(result);
@@ -52,11 +69,13 @@ namespace GymTracker.Controllers
         [HttpDelete("{id}")]
         public virtual IActionResult Delete(int id)
         {
+            if (!IsAuthorized(id))
+                return Unauthorized("You do not have permission to delete this data.");
+
             _service.Delete(id);
             return NoContent();
         }
 
-        //helpers
         protected bool IsOwnerOrAdmin(int resourceOwnerId)
         {
             if (User.IsInRole("Admin")) return true;

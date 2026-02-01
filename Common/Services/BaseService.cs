@@ -65,5 +65,10 @@ namespace Common.Services
             _dbSet.Remove(entity);
             _db.SaveChanges();
         }
+
+        public virtual int? GetOwnerId(int id)
+        {
+            return null;
+        }
     }
 }
