@@ -12,5 +12,12 @@ namespace GymTracker.Controllers
         public WorkoutTemplatesController(TemplateService service) : base(service)
         {
         }
+
+        [HttpPost]
+        public override IActionResult Post([FromBody] WorkoutTemplateCreateRequest request)
+        {
+            request.UserId = GetLoggedUserId();
+            return base.Post(request);
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace GymTracker.Controllers
             return base.Post(request);
         }
 
+
         [Authorize(Roles = "Admin")]
         public override IActionResult Put(int id, [FromBody] ExerciseRequest request)
         {

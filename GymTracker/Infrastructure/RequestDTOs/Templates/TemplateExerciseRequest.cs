@@ -5,6 +5,7 @@ namespace GymTracker.Infrastructure.RequestDTOs.Templates
     public class TemplateExerciseRequest
     {
         public int ExerciseId { get; set; }
+        public int WorkoutTemplateId { get; set; }
         public List<TemplateSetRequest> Sets { get; set; }
     }
 }

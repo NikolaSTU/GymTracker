@@ -42,49 +42,12 @@ namespace GymTracker.Controllers
             }
         }
 
-        // overrides 
-        [HttpGet("{id}")]
-        public override IActionResult GetById(int id)
+        [HttpPost]
+        public override IActionResult Post([FromBody] WorkoutCreateRequest request)
         {
-            var workout = _service.GetById(id);
-            if (workout == null) return NotFound();
-
-            if (!IsOwnerOrAdmin(workout.UserId))
-            {
-                return Unauthorized("This workout does not belong to you.");
-            }
-
-            return Ok(workout);
+            request.UserId = GetLoggedUserId(); 
+            return base.Post(request);
         }
 
-        [HttpDelete("{id}")]
-        public override IActionResult Delete(int id)
-        {
-            var workout = _service.GetById(id);
-            if (workout == null) return NotFound();
-
-            if (!IsOwnerOrAdmin(workout.UserId))
-            {
-                return Unauthorized("You cannot delete someone else's workout.");
-            }
-
-            _service.Delete(id);
-            return NoContent();
-        }
-
-        [HttpPut("{id}")]
-        public override IActionResult Put(int id, [FromBody] WorkoutCreateRequest request)
-        {
-            var workout = _service.GetById(id);
-            if (workout == null) return NotFound();
-
-            if (!IsOwnerOrAdmin(workout.UserId))
-            {
-                return Unauthorized("You cannot edit someone else's workout.");
-            }
-
-            return base.Put(id, request);
-        }
-       
     }
 }

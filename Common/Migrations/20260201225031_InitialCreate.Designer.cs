@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260120185040_Fix1")]
-    partial class Fix1
+    [Migration("20260201225031_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,8 +96,8 @@ namespace Common.Migrations
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<long>("OrderIndex")
-                        .HasColumnType("bigint");
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("int");
 
                     b.Property<int>("TemplateId")
                         .HasColumnType("int");
@@ -122,7 +122,7 @@ namespace Common.Migrations
                     b.Property<int>("TargetReps")
                         .HasColumnType("int");
 
-                    b.Property<float>("TargetWeigth")
+                    b.Property<float>("TargetWeight")
                         .HasColumnType("real");
 
                     b.Property<int>("TemplateExerciseId")
@@ -161,6 +161,9 @@ namespace Common.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
@@ -181,6 +184,7 @@ namespace Common.Migrations
                             Height = 185,
                             LastName = "Dev",
                             Password = "password",
+                            Role = "User",
                             Username = "nikola",
                             Weight = 90
                         });

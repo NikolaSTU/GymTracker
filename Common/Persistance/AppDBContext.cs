@@ -18,10 +18,13 @@ public class AppDbContext : DbContext
     {
         optionsBuilder
             .UseLazyLoadingProxies()
-            .UseSqlServer(@"Data Source=(localdb)\MSSQLLOCALDB;
+            .UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;
                             Initial Catalog=GymTrackerDB;
-                            User ID=nikola;
-                            Password=password;
+                            Integrated Security=True;
+                            Persist Security Info=False;
+                            Pooling=False;
+                            MultipleActiveResultSets=True;
+                            Encrypt=True;
                             TrustServerCertificate=True;");
     }
 
@@ -104,7 +107,8 @@ public class AppDbContext : DbContext
             LastName = "Dev",
             Height = 185,    
             Weight = 90,     
-            Gender = 1,      
+            Gender = 1,    
+            Role = "Admin",
            
         });
 

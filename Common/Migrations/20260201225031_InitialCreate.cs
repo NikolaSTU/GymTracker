@@ -37,8 +37,9 @@ namespace Common.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Height = table.Column<int>(type: "int", nullable: true),
-                    Weigth = table.Column<int>(type: "int", nullable: true),
-                    Gender = table.Column<int>(type: "int", nullable: true)
+                    Weight = table.Column<int>(type: "int", nullable: true),
+                    Gender = table.Column<int>(type: "int", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,7 +64,7 @@ namespace Common.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,7 +123,7 @@ namespace Common.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TemplateId = table.Column<int>(type: "int", nullable: false),
                     ExerciseId = table.Column<int>(type: "int", nullable: false),
-                    OrderIndex = table.Column<long>(type: "bigint", nullable: false)
+                    OrderIndex = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,7 +133,7 @@ namespace Common.Migrations
                         column: x => x.ExerciseId,
                         principalTable: "Exercises",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TemplateExercises_WorkoutTemplates_TemplateId",
                         column: x => x.TemplateId,
@@ -172,7 +173,7 @@ namespace Common.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TemplateExerciseId = table.Column<int>(type: "int", nullable: false),
                     TargetReps = table.Column<int>(type: "int", nullable: false),
-                    TargetWeigth = table.Column<float>(type: "real", nullable: false)
+                    TargetWeight = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,6 +190,11 @@ namespace Common.Migrations
                 table: "Exercises",
                 columns: new[] { "Id", "ExerciseDesc", "ExerciseName" },
                 values: new object[] { 1, "Leg compound movement", "Squat" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "FirstName", "Gender", "Height", "LastName", "Password", "Role", "Username", "Weight" },
+                values: new object[] { 1, "nikola@gymtracker.com", "Nikola", 1, 185, "Dev", "password", "User", "nikola", 90 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetsEntries_WorkoutExerciseId",
