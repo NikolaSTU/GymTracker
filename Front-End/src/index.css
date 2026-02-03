@@ -1,0 +1,14 @@
+/* Reset default margins and ensure sidebar fills viewport */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Ensure the sidebar occupies full height */
+.min-vh-100 {
+  min-height: 100vh !important;
+}

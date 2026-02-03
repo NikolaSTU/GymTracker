@@ -21,6 +21,36 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+// Enable CORS for the front-end dev server (Vite)
+if (builder.Environment.IsDevelopment())
+{
+    // In development allow any origin to simplify local testing
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+}
+else
+{
+    // In non-development environments restrict to the known front-end origin
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
+}
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<RequestMappingProfile>();
 builder.Services.AddAutoMapper(typeof(ResponseMappingProfile).Assembly);
@@ -97,6 +127,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Enable CORS before authentication/authorization
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
 

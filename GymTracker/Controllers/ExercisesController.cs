@@ -13,6 +13,13 @@ namespace GymTracker.Controllers
         {
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public override IActionResult Get()
+        {
+            return base.Get();
+        }
+
         [Authorize(Roles = "Admin")]
         public override IActionResult Post([FromBody] ExerciseRequest request)
         {

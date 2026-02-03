@@ -22,10 +22,17 @@ namespace GymTracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public override IActionResult Get()
         {
-            return base.Get();
+            // Admins can see all templates, normal users only their own
+            if (User.IsInRole("Admin"))
+            {
+                return base.Get();
+            }
+
+            var userId = GetLoggedUserId();
+            var list = ((TemplateService)_service).GetAllForUser(userId);
+            return Ok(list);
         }
     }
 }
