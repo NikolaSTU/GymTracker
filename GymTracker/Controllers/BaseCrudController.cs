@@ -29,7 +29,6 @@ namespace GymTracker.Controllers
             return IsOwnerOrAdmin(ownerId.Value);
         }
 
-
         [HttpGet]
         public virtual IActionResult Get()
         {

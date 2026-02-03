@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using GymTracker.Infrastructure.Services;
+using Common.Entities;
 using GymTracker.Infrastructure.RequestDTOs.Workouts;
 using GymTracker.Infrastructure.ResponseDTOs.Workouts;
-using Common.Entities;
+using GymTracker.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GymTracker.Controllers
 {
@@ -10,5 +11,11 @@ namespace GymTracker.Controllers
     {
         public WorkoutExercisesController(WorkoutExerciseService service) : base(service) { }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override IActionResult Get()
+        {
+            return base.Get();
+        }
     }
 }

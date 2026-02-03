@@ -17,23 +17,30 @@ namespace GymTracker.Infrastructure.Services
         {
         }
 
-        public WorkoutResponse CreateFromTemplate(int templateId, int userId)
+        public WorkoutResponse CreateFromTemplate(WorkoutFromTemplateRequest request, int userId)
         {
             var template = _db.WorkoutTemplates
                 .Include(t => t.TemplateExercises)
                     .ThenInclude(te => te.TemplateSets)
                 .AsNoTracking()
-                .FirstOrDefault(t => t.Id == templateId);
-
+                .FirstOrDefault(t => t.Id == request.TemplateId);
             if (template == null)
             {
-                throw new Exception($"Workout Template with ID {templateId} not found.");
+                throw new Exception($"Workout Template with ID {request.TemplateId} not found.");
             }
 
             var newWorkout = new Workout
             {
                 UserId = userId,
+
+
                 Date = DateTime.Now,
+
+                //if no name, use template name
+                Name = string.IsNullOrWhiteSpace(request.Name)
+                       ? template.Name
+                       : request.Name,
+
                 WorkoutExercises = new List<WorkoutExercise>()
             };
 
@@ -59,9 +66,23 @@ namespace GymTracker.Infrastructure.Services
             }
 
             _dbSet.Add(newWorkout);
-            _db.SaveChanges(); 
+            _db.SaveChanges();
 
             return _mapper.Map<WorkoutResponse>(newWorkout);
+        }
+
+        public WorkoutResponse Create(WorkoutCreateRequest request, int userId)
+        {
+
+            var workout = _mapper.Map<Workout>(request);
+
+            //this is why the method exists separately from base Create
+            workout.UserId = userId;
+
+            _db.Workouts.Add(workout);
+            _db.SaveChanges();
+
+            return _mapper.Map<WorkoutResponse>(workout);
         }
 
         public List<WorkoutResponse> GetAllForUser(int userId)

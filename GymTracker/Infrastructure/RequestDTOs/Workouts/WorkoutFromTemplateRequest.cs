@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace GymTracker.Infrastructure.RequestDTOs.Workouts
 {
-    public class WorkoutCreateRequest
+    public class WorkoutFromTemplateRequest
     {
+        public int TemplateId { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
 
-        public List<WorkoutExerciseRequest> Exercises
-        {
-            get; set;
-        }
     }
 }

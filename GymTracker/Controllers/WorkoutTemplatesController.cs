@@ -3,6 +3,7 @@ using GymTracker.Infrastructure.Services;
 using GymTracker.Infrastructure.RequestDTOs.Templates;
 using GymTracker.Infrastructure.ResponseDTOs.Templates;
 using Common.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymTracker.Controllers
 {
@@ -18,6 +19,13 @@ namespace GymTracker.Controllers
         {
             request.UserId = GetLoggedUserId();
             return base.Post(request);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override IActionResult Get()
+        {
+            return base.Get();
         }
     }
 }

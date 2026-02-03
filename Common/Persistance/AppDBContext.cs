@@ -45,7 +45,7 @@ public class AppDbContext : DbContext
             .HasOne(w => w.User)
             .WithMany(u => u.Workouts)
             .HasForeignKey(w => w.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Workout -> WorkoutExercise
         modelBuilder.Entity<WorkoutExercise>()
@@ -66,7 +66,7 @@ public class AppDbContext : DbContext
             .HasOne(wt => wt.User)
             .WithMany(u => u.WorkoutTemplates)
             .HasForeignKey(wt => wt.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // WorkoutTemplate -> TemplateExercise
         modelBuilder.Entity<TemplateExercise>()
@@ -96,21 +96,6 @@ public class AppDbContext : DbContext
             .HasForeignKey(we => we.ExerciseId)
             .OnDelete(DeleteBehavior.Restrict);
 
-
-        modelBuilder.Entity<User>().HasData(new User
-        {
-            Id = 1,
-            Username = "nikola",
-            Password = "password",
-            Email = "nikola@gymtracker.com", 
-            FirstName = "Nikola",
-            LastName = "Dev",
-            Height = 185,    
-            Weight = 90,     
-            Gender = 1,    
-            Role = "Admin",
-           
-        });
 
         modelBuilder.Entity<Exercise>().HasData(new Exercise
         {

@@ -19,10 +19,6 @@ namespace GymTracker.Infrastructure.Mappings
                  .ForMember(d => d.ExerciseDesc, o => o.MapFrom(s => s.ExerciseDesc));
 
             CreateMap<WorkoutCreateRequest, Workout>()
-                .ForMember(d => d.UserId, o => {
-                    o.Condition(s => s.UserId > 0);
-                    o.MapFrom(s => s.UserId);
-                })
                 .ForMember(d => d.WorkoutExercises, o => o.MapFrom(s => s.Exercises));
 
             CreateMap<WorkoutExerciseRequest, WorkoutExercise>()

@@ -13,29 +13,35 @@ namespace GymTracker.Controllers
         {
         }
 
+        [HttpPost]
         [Authorize (Roles = "Admin")]
         public override IActionResult Post([FromBody] UserRequest request)
         {
             return base.Post(request);
         }
 
+        [HttpPut]
         [Authorize (Roles = "Admin")]
         public override IActionResult Put(int id, [FromBody] UserRequest request)
         {
             return base.Put(id, request);
         }
+
+        [HttpDelete]
         [Authorize (Roles = "Admin")]
         public override IActionResult Delete(int id)
         {
             return base.Delete(id);
         }
 
+        [HttpGet]
         [Authorize (Roles = "Admin")]
         public override IActionResult Get()
         {
             return base.Get();
         }
 
+        [HttpGet("{id}")]
         [Authorize (Roles = "Admin")]
         public override IActionResult GetById(int id)
         {

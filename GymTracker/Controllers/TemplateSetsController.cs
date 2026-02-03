@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using GymTracker.Infrastructure.Services;
+using Common.Entities;
 using GymTracker.Infrastructure.RequestDTOs.Templates;
 using GymTracker.Infrastructure.ResponseDTOs.Templates;
-using Common.Entities;
+using GymTracker.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GymTracker.Controllers
 {
@@ -10,6 +11,13 @@ namespace GymTracker.Controllers
     {
         public TemplateSetsController(TemplateSetService service) : base(service)
         {
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override IActionResult Get()
+        {
+            return base.Get();
         }
     }
 }

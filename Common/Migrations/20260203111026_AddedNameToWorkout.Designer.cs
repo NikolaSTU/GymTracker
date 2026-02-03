@@ -4,6 +4,7 @@ using Common.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260203111026_AddedNameToWorkout")]
+    partial class AddedNameToWorkout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,6 +167,21 @@ namespace Common.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "nikola@gymtracker.com",
+                            FirstName = "Nikola",
+                            Gender = 1,
+                            Height = 185,
+                            LastName = "Dev",
+                            Password = "password",
+                            Role = "Admin",
+                            Username = "nikola",
+                            Weight = 90
+                        });
                 });
 
             modelBuilder.Entity("Common.Entities.Workout", b =>
@@ -286,7 +304,7 @@ namespace Common.Migrations
                     b.HasOne("Common.Entities.User", "User")
                         .WithMany("Workouts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -316,7 +334,7 @@ namespace Common.Migrations
                     b.HasOne("Common.Entities.User", "User")
                         .WithMany("WorkoutTemplates")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");

@@ -8,9 +8,9 @@ namespace Common.Entities
 {
     public class Workout : BaseEntity
     {
+        public string Name { get; set; }
         public int UserId { get; set; }
         public DateTime Date { get; set; }
-        public int Duration { get; set; }
 
         // a workout is of one user
         public virtual User User { get; set; }

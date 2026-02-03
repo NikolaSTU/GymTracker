@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using GymTracker.Infrastructure.Services;
+﻿using Common.Entities;
 using GymTracker.Infrastructure.RequestDTOs.Workouts;
 using GymTracker.Infrastructure.ResponseDTOs.Workouts;
-using Common.Entities;
+using GymTracker.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace GymTracker.Controllers
 {
@@ -11,6 +13,13 @@ namespace GymTracker.Controllers
     {
         public WorkoutController(WorkoutService service) : base(service)
         {
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public override IActionResult Get()
+        {
+            return base.Get();
         }
 
         [HttpGet("user/{userId}")]
@@ -26,27 +35,23 @@ namespace GymTracker.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{templateId}")]
-        public IActionResult CreateFromTemplate(int templateId)
+        [HttpPost("FromTemplate")]
+        public IActionResult CreateFromTemplate([FromBody] WorkoutFromTemplateRequest request)
         {
-            try
-            {
-                int userId = GetLoggedUserId();
+            int userId = GetLoggedUserId();
 
-                var newWorkout = _service.CreateFromTemplate(templateId, userId);
-                return Ok(newWorkout);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var newWorkout = _service.CreateFromTemplate(request, userId);
+
+            return Ok(newWorkout);
         }
-
         [HttpPost]
         public override IActionResult Post([FromBody] WorkoutCreateRequest request)
         {
-            request.UserId = GetLoggedUserId(); 
-            return base.Post(request);
+            int userId = GetLoggedUserId();
+
+            var createdWorkout = _service.Create(request, userId);
+
+            return Ok(createdWorkout);
         }
 
     }

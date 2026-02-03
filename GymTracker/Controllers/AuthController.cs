@@ -39,7 +39,8 @@ namespace GymTracker.Controllers
             }
 
             var user = _mapper.Map<User>(request);
-            user.Password = request.Password; 
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             _db.Users.Add(user);
             _db.SaveChanges(); 
@@ -53,7 +54,7 @@ namespace GymTracker.Controllers
             var user = _db.Users
                 .FirstOrDefault(u => u.Username.ToLower() == request.Username.ToLower());
 
-            if (user == null || user.Password != request.Password)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
                 return Unauthorized("Invalid username or password.");
             }
