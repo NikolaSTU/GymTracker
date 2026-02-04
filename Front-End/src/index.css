@@ -1,14 +1,341 @@
-/* Reset default margins and ensure sidebar fills viewport */
-html, body, #root {
-  height: 100%;
-  margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --primary: #2dd4bf;
+  --primary-hover: #14b8a6;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --danger: #f43f5e;
 }
 
+/* Global reset */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
 body {
   min-height: 100vh;
+  background: var(--bg-body);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-/* Ensure the sidebar occupies full height */
-.min-vh-100 {
-  min-height: 100vh !important;
+/* Cards */
+.card, .card-body {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06) !important;
+  color: var(--text-main) !important;
+}
+
+/* Ensure links and inline text inside cards are readable */
+.card a {
+  color: var(--primary) !important;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px !important;
+}
+.btn-primary {
+  background: var(--primary) !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+  border: none !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background: var(--primary-hover) !important;
+  box-shadow: 0 6px 20px rgba(45,212,191,0.12) !important;
+}
+button:focus { outline: none; }
+
+/* Inputs */
+.form-control, input, textarea, select, .form-select {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+}
+.form-control:focus, input:focus, textarea:focus, select:focus, .form-select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 6px 18px rgba(45,212,191,0.08) !important;
+  outline: none !important;
+}
+
+/* Tables */
+.table {
+  color: var(--text-main) !important;
+}
+.table thead th {
+  color: var(--text-muted) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  background: transparent !important;
+}
+
+/* Dark themed tables */
+.table {
+  background: transparent !important;
+  color: var(--text-main) !important;
+}
+
+.table th,
+.table td {
+  border-top: 0 !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  vertical-align: middle !important;
+  padding: 0.75rem 0.75rem !important;
+  color: var(--text-main) !important;
+  background: transparent !important;
+}
+
+.table thead th {
+  background: rgba(255,255,255,0.02) !important;
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+}
+
+/* striped rows with subtle contrast */
+.table.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255,255,255,0.01) !important;
+}
+
+/* hover state */
+.table.table-hover tbody tr:hover {
+  background-color: rgba(255,255,255,0.03) !important;
+}
+
+/* responsive table container styling */
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* make small helper text inside tables muted */
+.table .text-muted { color: var(--text-muted) !important; }
+
+
+/* Sidebar & Topbar utilities (keep lightweight) */
+.sidebar { background: transparent; }
+.topbar {
+  /* Match card background so the topbar blends with cards */
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Utility classes */
+.text-muted { color: var(--text-muted) !important; }
+.small-muted { color: var(--text-muted); font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+  .sidebar { width: 100%; }
+}
+
+/* Standardize buttons globally */
+.btn {
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  transition: background-color .15s ease, transform .05s ease, box-shadow .12s ease !important;
+  box-shadow: none !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.btn-primary {
+  background: var(--primary) !important;
+  color: #0f172a !important; /* dark text for contrast */
+  border: none !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background: var(--primary-hover) !important;
+  box-shadow: 0 6px 20px rgba(45,212,191,0.12) !important;
+  transform: translateY(-1px) !important;
+}
+
+.btn-secondary {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background: rgba(255,255,255,0.02) !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-danger {
+  background: var(--danger) !important;
+  color: var(--text-main) !important;
+}
+.btn-danger:hover { filter: brightness(0.95); }
+
+/* Outline variants */
+.btn-outline-secondary {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.btn-outline-secondary:hover { border-color: var(--primary) !important; }
+
+.btn:disabled, .btn[disabled] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure small/square icon buttons keep consistent sizing */
+.btn-sm { padding: 6px 10px !important; border-radius: 8px !important; }
+.btn-lg { padding: 10px 18px !important; border-radius: 10px !important; }
+
+
+/* Fix form control colors and browser autofill conflicts */
+.form-control, .form-select {
+  background: var(--bg-card) !important; /* force dark background */
+  color: var(--text-main) !important;    /* force readable text */
+  border: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+  caret-color: var(--primary) !important;
+  background-clip: padding-box !important;
+}
+
+.form-control::placeholder,
+.form-control:-ms-input-placeholder,
+.form-select::placeholder,
+.form-select:-ms-input-placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 6px 18px rgba(45,212,191,0.08) !important; /* subtle teal glow */
+  background: var(--bg-card) !important; /* keep dark on focus */
+  outline: none !important;
+}
+
+/* WebKit autofill hack to prevent yellow/white background in Chrome */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/* Ensure autofill focus state also respects colors */
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/* Stronger overrides to beat Bootstrap specificity issues */
+body input.form-control,
+body textarea.form-control,
+body select.form-select,
+body .form-control,
+body .form-select {
+  background-color: var(--bg-card) !important;
+  background-image: none !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/* Specific sizes and variants */
+body input.form-control.form-control-lg,
+body input.form-control.form-control-sm,
+body textarea.form-control.form-control-lg,
+body textarea.form-control.form-control-sm {
+  color: var(--text-main) !important;
+}
+
+/* Disabled / readonly fields should still be readable */
+body .form-control[disabled],
+body .form-control[readonly],
+body .form-select[disabled],
+body .form-select[readonly] {
+  color: var(--text-muted) !important;
+  background-color: var(--bg-card) !important;
+  opacity: 1 !important;
+}
+
+/* Make sure placeholder and small helper text are visible */
+body .form-control::placeholder,
+body .form-select::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* If Bootstrap utilities still apply a color, force computed color on focus as well */
+body .form-control:focus,
+body .form-select:focus {
+  color: var(--text-main) !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/* If you still see white/yellow from autofill, try a hard reload (Ctrl+Shift+R) after this change */
+
+/* Extra high-specificity overrides to beat any remaining Bootstrap rules */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"],
+textarea, select, .form-control, .form-select, .input-group .form-control {
+  background-color: var(--bg-card) !important;
+  background-image: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  color: var(--text-main) !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Placeholder visibility */
+input::placeholder, textarea::placeholder, select::placeholder,
+.form-control::placeholder, .form-select::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* WebKit autofill full selector coverage */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  box-shadow: 0 0 0px 1000px var(--bg-card) inset !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+}
+
+/* Ensure input children (icons, text) inherit readable color */
+.input-group-text, .form-control ~ .input-group-text {
+  background: var(--bg-card) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Final focus enforcement */
+input:focus, textarea:focus, select:focus, .form-control:focus, .form-select:focus {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  -webkit-text-fill-color: var(--text-main) !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 6px 18px rgba(45,212,191,0.08) !important;
 }

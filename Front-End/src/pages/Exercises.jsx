@@ -87,7 +87,7 @@ export default function Exercises() {
               </div>
               {error && <div className="alert alert-danger">{error}</div>}
               <div>
-                <button type="submit" className={`btn ${editingId ? 'btn-primary' : 'btn-success'} me-2`}>
+                <button type="submit" className={`btn btn-primary me-2`}>
                   {editingId ? 'Update Exercise' : 'Save Exercise'}
                 </button>
                 {editingId && (
@@ -123,7 +123,7 @@ export default function Exercises() {
                       <td>{ex.description}</td>
                       {user?.role === 'Admin' && (
                         <td>
-                          <button className="btn btn-sm btn-warning me-2" onClick={() => handleEdit(ex)}>
+                          <button className="btn btn-sm btn-secondary me-2" onClick={() => handleEdit(ex)}>
                             Edit
                           </button>
                           <button className="btn btn-sm btn-danger" onClick={() => handleDelete(ex.id)}>

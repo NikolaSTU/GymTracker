@@ -89,12 +89,22 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function register(username, email, password) {
+  async function register(username, email, password, firstName, lastName, weight, height) {
     try {
+      const body = {
+        username,
+        email,
+        password,
+      };
+      if (firstName) body.firstName = firstName;
+      if (lastName) body.lastName = lastName;
+      if (typeof weight !== 'undefined') body.weight = weight;
+      if (typeof height !== 'undefined') body.height = height;
+
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) {

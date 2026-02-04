@@ -7,6 +7,10 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
   const [error, setError] = useState(null);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,7 +23,10 @@ export default function Register() {
       return;
     }
 
-    const result = await register(username, email, password);
+    const parsedWeight = weight ? parseInt(weight, 10) : undefined;
+    const parsedHeight = height ? parseInt(height, 10) : undefined;
+
+    const result = await register(username, email, password, firstName, lastName, parsedWeight, parsedHeight);
     if (!result.success) {
       setError(result.message || 'Registration failed');
       return;
@@ -39,8 +46,24 @@ export default function Register() {
               <input value={username} onChange={e => setUsername(e.target.value)} className="form-control" />
             </div>
             <div className="mb-3">
+              <label className="form-label">First Name</label>
+              <input value={firstName} onChange={e => setFirstName(e.target.value)} className="form-control" />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Last Name</label>
+              <input value={lastName} onChange={e => setLastName(e.target.value)} className="form-control" />
+            </div>
+            <div className="mb-3">
               <label className="form-label">Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} className="form-control" />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Weight (kg)</label>
+              <input value={weight} onChange={e => setWeight(e.target.value)} className="form-control" />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Height (cm)</label>
+              <input value={height} onChange={e => setHeight(e.target.value)} className="form-control" />
             </div>
             <div className="mb-3">
               <label className="form-label">Password</label>

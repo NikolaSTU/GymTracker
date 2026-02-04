@@ -56,7 +56,7 @@ export default function Templates() {
               <div className="card-footer d-flex justify-content-between">
                 <small className="text-muted">{(t.exercises || []).length} Exercises</small>
                 <div>
-                  <button className="btn btn-sm btn-success me-2" onClick={async () => {
+                  <button className="btn btn-sm btn-primary me-2" onClick={async () => {
                     if (activeWorkoutId) {
                       alert('Please finish or delete your current active workout before starting a new one.');
                       return;
@@ -72,8 +72,8 @@ export default function Templates() {
                       alert(err.message || 'Failed to start workout');
                     }
                   }}>Start Workout</button>
-                  <Link to={`/templates/edit/${t.id}`} className="btn btn-sm btn-outline-primary me-2">Edit</Link>
-                  <button className="btn btn-sm btn-outline-danger" onClick={async () => {
+                  <Link to={`/templates/edit/${t.id}`} className="btn btn-sm btn-secondary me-2">Edit</Link>
+                  <button className="btn btn-sm btn-danger" onClick={async () => {
                     if (!window.confirm('Delete this template?')) return;
                     try {
                       await templateService.delete(token, t.id);

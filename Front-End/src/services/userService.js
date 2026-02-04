@@ -17,7 +17,8 @@ async function getAll(token) {
 }
 
 async function update(token, id, userData) {
-  const res = await fetch(`${base}/${id}`, {
+  // Backend expects the id as a query parameter for this controller, so send PUT to the collection route
+  const res = await fetch(`${base}?id=${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +34,8 @@ async function update(token, id, userData) {
 }
 
 async function remove(token, id) {
-  const res = await fetch(`${base}/${id}`, {
+  // Controller accepts DELETE with id passed as query parameter
+  const res = await fetch(`${base}?id=${id}`, {
     method: 'DELETE',
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

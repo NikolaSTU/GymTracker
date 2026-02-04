@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaList, FaClipboardList, FaDumbbell, FaPlay } from 'react-icons/fa';
+import { FaList, FaClipboardList, FaDumbbell, FaPlay, FaUser, FaHome } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
 import workoutService from '../services/workoutService';
 
@@ -37,6 +37,10 @@ export default function Sidebar() {
       </div>
 
       <nav className="nav flex-column">
+        <NavLink to="/dashboard" end className={({ isActive }) => linkClass(isActive)}>
+          <FaHome className="me-2" /> Dashboard
+        </NavLink>
+
         <NavLink to="/dashboard/exercises" className={({ isActive }) => linkClass(isActive)}>
           <FaList className="me-2" /> Exercises
         </NavLink>
@@ -52,14 +56,14 @@ export default function Sidebar() {
         {/** Manage Users visible to Admin only */}
         {user?.role === 'Admin' && (
           <NavLink to="/admin/users" className={({ isActive }) => linkClass(isActive)}>
-            <FaDumbbell className="me-2" /> Manage Users
+            <FaUser className="me-2" /> Manage Users
           </NavLink>
         )}
 
         
 
         {!activeWorkoutId && (
-          <button className="btn btn-sm btn-success mt-3" onClick={startEmpty}>
+          <button className="btn btn-sm btn-primary mt-3" onClick={startEmpty}>
             <FaPlay className="me-2" /> Start Empty Workout
           </button>
         )}

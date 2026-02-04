@@ -9,7 +9,6 @@ export default function AdminUsers() {
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -44,16 +43,7 @@ export default function AdminUsers() {
     }
   }
 
-  async function handleSave() {
-    if (!editingUser) return;
-    try {
-      await userService.update(token, editingUser.id ?? editingUser.Id, editingUser);
-      setEditingUser(null);
-      await load();
-    } catch (err) {
-      alert(err.message || 'Update failed');
-    }
-  }
+  
 
   return (
     <div>
@@ -67,7 +57,10 @@ export default function AdminUsers() {
             <th>ID</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Weight (kg)</th>
+            <th>Height (cm)</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -77,40 +70,17 @@ export default function AdminUsers() {
               <td>{u.id ?? u.Id}</td>
               <td>{u.username ?? u.Username}</td>
               <td>{u.email ?? u.Email}</td>
-              <td>{u.role ?? u.Role}</td>
+              <td>{u.firstName ?? u.FirstName}</td>
+              <td>{u.lastName ?? u.LastName}</td>
+              <td>{(u.weight ?? u.Weight) ?? ''}</td>
+              <td>{(u.height ?? u.Height) ?? ''}</td>
               <td>
-                <button className="btn btn-sm btn-primary me-2" onClick={() => setEditingUser({ id: u.id ?? u.Id, username: u.username ?? u.Username, email: u.email ?? u.Email, role: u.role ?? u.Role })}>Edit</button>
                 <button className="btn btn-sm btn-danger" onClick={() => handleDelete(u.id ?? u.Id)}>Delete</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {editingUser && (
-        <div className="card p-3">
-          <h5>Edit User</h5>
-          <div className="mb-2">
-            <label className="form-label">Username</label>
-            <input className="form-control" value={editingUser.username} onChange={e => setEditingUser(prev => ({ ...prev, username: e.target.value }))} />
-          </div>
-          <div className="mb-2">
-            <label className="form-label">Email</label>
-            <input className="form-control" value={editingUser.email} onChange={e => setEditingUser(prev => ({ ...prev, email: e.target.value }))} />
-          </div>
-          <div className="mb-2">
-            <label className="form-label">Role</label>
-            <select className="form-control" value={editingUser.role} onChange={e => setEditingUser(prev => ({ ...prev, role: e.target.value }))}>
-              <option value="User">User</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
-          <div>
-            <button className="btn btn-primary me-2" onClick={handleSave}>Save</button>
-            <button className="btn btn-secondary" onClick={() => setEditingUser(null)}>Cancel</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
