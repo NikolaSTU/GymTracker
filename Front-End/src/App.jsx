@@ -11,6 +11,8 @@ import AdminUsers from './pages/AdminUsers';
 import Exercises from './pages/Exercises';
 import Templates from './pages/Templates';
 import CreateTemplate from './pages/CreateTemplate';
+import ActiveWorkout from './pages/ActiveWorkout';
+import WorkoutDetails from './pages/WorkoutDetails';
 
 export default function App() {
   return (
@@ -35,6 +37,26 @@ export default function App() {
               <ProtectedRoute>
                 <Layout>
                   <MyWorkouts />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workout/active/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ActiveWorkout />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workout/history/:id"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <WorkoutDetails />
                 </Layout>
               </ProtectedRoute>
             }
@@ -86,6 +108,16 @@ export default function App() {
           />
           <Route
             path="/dashboard/admin"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AdminUsers />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
             element={
               <ProtectedRoute>
                 <Layout>

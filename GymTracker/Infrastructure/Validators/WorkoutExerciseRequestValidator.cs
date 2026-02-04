@@ -10,9 +10,6 @@ namespace GymTracker.Infrastructure.Validators
             RuleFor(x => x.ExerciseId)
                 .GreaterThan(0);
 
-            RuleFor(x => x.Sets)
-                .NotEmpty();
-
             RuleForEach(x => x.Sets)
                 .SetValidator(new SetsEntryRequestValidator());
         }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import templateService from '../services/templateService';
+import workoutService from '../services/workoutService';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +9,9 @@ export default function Templates() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { token } = useContext(AuthContext);
+  const { token, setActiveWorkout, activeWorkoutId, clearActiveWorkout } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     load();
@@ -52,6 +56,22 @@ export default function Templates() {
               <div className="card-footer d-flex justify-content-between">
                 <small className="text-muted">{(t.exercises || []).length} Exercises</small>
                 <div>
+                  <button className="btn btn-sm btn-success me-2" onClick={async () => {
+                    if (activeWorkoutId) {
+                      alert('Please finish or delete your current active workout before starting a new one.');
+                      return;
+                    }
+                    try {
+                      const created = await workoutService.startFromTemplate(token, t.id);
+                      const newId = created?.id ?? created?.Id;
+                      if (newId) {
+                        setActiveWorkout(newId);
+                        navigate(`/workout/active/${newId}`);
+                      }
+                    } catch (err) {
+                      alert(err.message || 'Failed to start workout');
+                    }
+                  }}>Start Workout</button>
                   <Link to={`/templates/edit/${t.id}`} className="btn btn-sm btn-outline-primary me-2">Edit</Link>
                   <button className="btn btn-sm btn-outline-danger" onClick={async () => {
                     if (!window.confirm('Delete this template?')) return;

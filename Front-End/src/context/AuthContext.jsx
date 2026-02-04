@@ -7,10 +7,12 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [activeWorkoutId, setActiveWorkoutId] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
+    const storedActive = localStorage.getItem('activeWorkoutId');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
@@ -29,6 +31,10 @@ export function AuthProvider({ children }) {
         setUser(null);
         localStorage.removeItem('token');
       }
+    }
+
+    if (storedActive) {
+      setActiveWorkoutId(storedActive);
     }
   }, []);
 
@@ -110,8 +116,20 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  function setActiveWorkout(id) {
+    try {
+      localStorage.setItem('activeWorkoutId', String(id));
+    } catch {}
+    setActiveWorkoutId(String(id));
+  }
+
+  function clearActiveWorkout() {
+    try { localStorage.removeItem('activeWorkoutId'); } catch {}
+    setActiveWorkoutId(null);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, register }}>
+    <AuthContext.Provider value={{ user, token, login, logout, register, activeWorkoutId, setActiveWorkout, clearActiveWorkout }}>
       {children}
     </AuthContext.Provider>
   );

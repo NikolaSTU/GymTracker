@@ -16,8 +16,6 @@ namespace GymTracker.Infrastructure.Validators
                 .Must(date => date <= DateTime.Now)
                 .WithMessage("Date cannot be in the future.");
 
-            RuleFor(x => x.Exercises)
-                .NotEmpty();
 
             RuleForEach(x => x.Exercises)
                 .SetValidator(new WorkoutExerciseRequestValidator());
